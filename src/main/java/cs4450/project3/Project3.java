@@ -22,6 +22,11 @@ public class Project3 {
     //Initiate GL process
     private void initGL(){
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        
+        //Set up color modes for opacity
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         
