@@ -70,19 +70,20 @@ public class CameraController {
             glVertex3f(-1.0f, 1.0f,-1.0f);
             glVertex3f( 1.0f, 1.0f,-1.0f);
             
-            //Right
-            glColor4f(1.0f,1.0f,0.0f, 1.0f);
-            glVertex3f( 1.0f, 1.0f,-1.0f);
-            glVertex3f( 1.0f, 1.0f, 1.0f);
-            glVertex3f( 1.0f,-1.0f, 1.0f);
-            glVertex3f( 1.0f,-1.0f,-1.0f);
-            
             //Left
             glColor4f(0.0f,1.0f,1.0f, 1.0f);
             glVertex3f(-1.0f, 1.0f,-1.0f);
             glVertex3f(-1.0f, 1.0f, 1.0f);
             glVertex3f(-1.0f,-1.0f, 1.0f);
             glVertex3f(-1.0f,-1.0f,-1.0f);
+            
+            //Right
+            glColor4f(1.0f,1.0f,0.0f, 1.0f);
+            glVertex3f( 1.0f, 1.0f,-1.0f);
+            glVertex3f( 1.0f, 1.0f, 1.0f);
+            glVertex3f( 1.0f,-1.0f, 1.0f);
+            glVertex3f( 1.0f,-1.0f,-1.0f);
+
             glEnd();
             
             glColor3f(0.0f,0.0f,0.0f); //line color
@@ -280,6 +281,7 @@ public class CameraController {
             Display.update();
             Display.sync(60);
         }
+        Display.destroy();
     }
     //=====================================
 }
