@@ -6,10 +6,6 @@ package cs4450.project3;
 
 //class dependencies
 
-/**
- *
- * @author arze7
- */
 public class CameraPosition {
     public float x, y, z;
     public CameraPosition(float x, float y, float z){
