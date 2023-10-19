@@ -12,10 +12,6 @@ import org.lwjgl.opengl.Display;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.Sys;
 
-/**
- *
- * @author arze7
- */
 public class CameraController {
     //3D vector for storing the camera's position
     private CameraPosition position = null;
@@ -33,12 +29,6 @@ public class CameraController {
     private void render(){
         try{
             glBegin(GL_QUADS);
-            
-//            glColor3f(1.0f, 0.0f, 1.0f);
-//            glVertex3f(1.0f, -1.0f, -1.0f);
-//            glVertex3f(-1.0f, -1.0f, -1.0f);
-//            glVertex3f(-1.0f, 1.0f, -1.0f);
-//            glVertex3f(1.0f, 1.0f, -1.0f);
             
             glScalef(5.0f, 5.0f, 1.0f);
             

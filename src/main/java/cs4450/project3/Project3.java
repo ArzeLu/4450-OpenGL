@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
 
+// Made by Arze, Harshitha, Rucha
 package cs4450.project3;
 
 //class dependencies
@@ -11,10 +12,7 @@ import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.util.glu.GLU;
 
 //my own imports
-/**
- *
- * @author arze7
- */ 
+
 public class Project3 {   
     final private CameraController camera = new CameraController(0f, 0f, 0f);
     private DisplayMode displayMode;
