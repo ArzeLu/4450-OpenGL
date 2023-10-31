@@ -196,7 +196,10 @@ public class Project3 {
     private void initGL(){
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_COLOR_ARRAY);
         glEnable(GL_DEPTH_TEST);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
