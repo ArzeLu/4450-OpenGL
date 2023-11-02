@@ -38,49 +38,23 @@ public class Chunk {
         glPopMatrix();
     }
     
-    public static float[] createTexCube(float x, float y, Block block){
+    public static float[] createTexCube(Block block){
         float offset = (1024f / 16) / 1024f;
-        float[] defaultTexture = new float[]{
-            // BOTTOM QUAD(DOWN=+Y)
-            x + offset*3, y + offset*10,
-            x + offset*2, y + offset*10,
-            x + offset*2, y + offset*9,
-            x + offset*3, y + offset*9,
-            // TOP!
-            x + offset*3, y + offset*1,
-            x + offset*2, y + offset*1,
-            x + offset*2, y + offset*0,
-            x + offset*3, y + offset*0,
-            // FRONT QUAD
-            x + offset*3, y + offset*0,
-            x + offset*4, y + offset*0,
-            x + offset*4, y + offset*1,
-            x + offset*3, y + offset*1,
-            // BACK QUAD
-            x + offset*4, y + offset*1,
-            x + offset*3, y + offset*1,
-            x + offset*3, y + offset*0,
-            x + offset*4, y + offset*0,
-            // LEFT QUAD
-            x + offset*3, y + offset*0,
-            x + offset*4, y + offset*0,
-            x + offset*4, y + offset*1,
-            x + offset*3, y + offset*1,
-            // RIGHT QUAD
-            x + offset*3, y + offset*0,
-            x + offset*4, y + offset*0,
-            x + offset*4, y + offset*1,
-            x + offset*3, y + offset*1
-        };
+        float[] defaultTexture = MCTexture.grassTexCoords;
         
         switch(block.getType()){
             case Grass:
-                return defaultTexture;
+                return MCTexture.grassTexCoords;
             case Sand:
+                return MCTexture.sandTexCoords;
             case Water:
+                return MCTexture.waterTexCoords;
             case Dirt:
+                return MCTexture.dirtTexCoords;
             case Stone:
+                return MCTexture.stoneTexCoords;
             case Bedrock:
+                return MCTexture.bedrockTexCoords;
         }
         
         return defaultTexture;
@@ -97,7 +71,7 @@ public class Chunk {
         for(float x = 0; x < CHUNK_SIZE; x++){
             for(float z = 0; z < CHUNK_SIZE; z++){
                 for(float y = 0; y < CHUNK_SIZE; y++){
-                    vertexTextureData.put(createTexCube((float)0, (float)0, blocks[(int)x][(int)y][(int)z]));
+                    vertexTextureData.put(createTexCube(blocks[(int)x][(int)y][(int)z]));
                     vertexPositionData.put(createCube((float)(startX + x * CUBE_LENGTH), (float)(y * CUBE_LENGTH + (int)(CHUNK_SIZE * 0.8)), (float)(startZ + z * CUBE_LENGTH)));
                     vertexColorData.put(createCubeVertexCol(getCubeColor(blocks[(int)x][(int)y][(int)z])));
                 }
