@@ -14,23 +14,27 @@ import org.lwjgl.opengl.DisplayMode;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.util.glu.GLU;
 
-//my own imports
+import org.newdawn.slick.opengl.Texture;
 
 public class Project3 {   
     final private CameraController camera = new CameraController(0f, 0f, 0f);
     private DisplayMode displayMode;
-   
+    final private static float OFFSET = (1024f / 16) / 1024f;
+    private Texture texture;
+    
     private void render(){
         try{
+            texture.bind();
             glBegin(GL_QUADS);
-            
-            glScalef(5.0f, 5.0f, 1.0f);
-            //Top
-            glColor4f(0.0f,1.0f,0.0f, 1.0f);
-            glVertex3f( 1.0f, 1.0f,-1.0f);
-            glVertex3f(-1.0f, 1.0f,-1.0f);
-            glVertex3f(-1.0f, 1.0f, 1.0f);
-            glVertex3f( 1.0f, 1.0f, 1.0f);
+
+            glTexCoord2f(OFFSET * 3, OFFSET * 0); 
+            glVertex3f(1, 1, 1);
+            glTexCoord2f(OFFSET * 4, OFFSET * 0);
+            glVertex3f(1, 1, -1);
+            glTexCoord2f(OFFSET * 4, OFFSET * 1);
+            glVertex3f(1, -1, -1);
+            glTexCoord2f(OFFSET * 3, OFFSET * 1);
+            glVertex3f(1, -1, 1);
            
             glEnd();
         }catch(Exception e){
@@ -49,6 +53,8 @@ public class Project3 {
         float movementSpeed = 0.35f;
         //hide the mouse
         Mouse.setGrabbed(true);
+        
+        texture = MCTexture.loadTexture();
         
         while(!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
             time = Sys.getTime();
@@ -97,6 +103,7 @@ public class Project3 {
             
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
+            //Chunk chunk = new Chunk(0, 0, 0);
             render();
             
             Display.update();
@@ -112,6 +119,7 @@ public class Project3 {
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_COLOR_ARRAY);
         glEnable(GL_DEPTH_TEST);
+        glEnable(GL_TEXTURE_2D);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
         glMatrixMode(GL_PROJECTION);

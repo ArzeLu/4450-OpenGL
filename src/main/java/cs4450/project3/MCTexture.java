@@ -4,10 +4,10 @@
  */
 package cs4450.project3;
 
-/**
- *
- * @author arze7
- */
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.util.ResourceLoader;
+
 public class MCTexture {
     final private static float OFFSET = (1024f / 16) / 1024f;
     
@@ -241,4 +241,16 @@ public class MCTexture {
         OFFSET * 4, OFFSET * 1,
         OFFSET * 3, OFFSET * 1,
     };
+    
+    public MCTexture(){};
+    
+    public static Texture loadTexture(){
+        Texture texture = null;
+        try{
+            texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("terrain.png"));
+        }catch(Exception e){
+            System.out.println("Exception in Chunk constructor");
+        }
+        return texture;
+    }
 }

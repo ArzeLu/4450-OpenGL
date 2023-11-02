@@ -2,3 +2,5 @@ https://stackoverflow.com/questions/21652546/what-is-the-role-of-glbindvertexarr
 https://stackoverflow.com/questions/12887802/what-exactly-is-a-buffer-in-opengl-and-how-can-i-use-multiple-ones-to-my-advant
 https://www.youtube.com/watch?v=9l1nBRrtzjA
 https://stackoverflow.com/questions/65371530/what-exactly-is-a-vbo-in-opengl
+https://stackoverflow.com/questions/10697161/why-floatbuffer-instead-of-float
+https://www.youtube.com/watch?v=u-00hjlfMKc&t=3s

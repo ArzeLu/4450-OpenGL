@@ -27,6 +27,7 @@ public class Chunk {
     
     
     public void render(){
+        texture.bind();
         glPushMatrix();
         glBindBuffer(GL_ARRAY_BUFFER, VBOVertexHandle);
         glBindTexture(GL_TEXTURE_2D, 1);
@@ -36,6 +37,42 @@ public class Chunk {
         glColorPointer(3, GL_FLOAT, 0, 0L);
         glDrawArrays(GL_QUADS, 0, CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE * 24);
         glPopMatrix();
+    }
+    
+    public static float[] createCube(float x, float y, float z){
+        int offset = CUBE_LENGTH / 2;
+        return new float[]{
+            // TOP QUAD
+            x + offset, y + offset, z,
+            x - offset, y + offset, z,
+            x - offset, y + offset, z - CUBE_LENGTH,
+            x + offset, y + offset, z - CUBE_LENGTH,
+            // BOTTOM QUAD
+            x + offset, y - offset, z - CUBE_LENGTH,
+            x - offset, y - offset, z - CUBE_LENGTH,
+            x - offset, y - offset, z,
+            x + offset, y - offset, z,
+            // FRONT QUAD
+            x + offset, y + offset, z - CUBE_LENGTH,
+            x - offset, y + offset, z - CUBE_LENGTH,
+            x - offset, y - offset, z - CUBE_LENGTH,
+            x + offset, y - offset, z - CUBE_LENGTH,
+            // BACK QUAD
+            x + offset, y - offset, z,
+            x - offset, y - offset, z,
+            x - offset, y + offset, z,
+            x + offset, y + offset, z,
+            // LEFT QUAD
+            x - offset, y + offset, z - CUBE_LENGTH,
+            x - offset, y + offset, z,
+            x - offset, y - offset, z,
+            x - offset, y - offset, z - CUBE_LENGTH,
+            // RIGHT QUAD
+            x + offset, y + offset, z,
+            x + offset, y + offset, z - CUBE_LENGTH,
+            x + offset, y - offset, z - CUBE_LENGTH,
+            x + offset, y - offset, z
+        };
     }
     
     public static float[] createTexCube(Block block){
@@ -101,42 +138,6 @@ public class Chunk {
         return cubeColors;
     }
     
-    public static float[] createCube(float x, float y, float z){
-        int offset = CUBE_LENGTH / 2;
-        return new float[]{
-            // TOP QUAD
-            x + offset, y + offset, z,
-            x - offset, y + offset, z,
-            x - offset, y + offset, z - CUBE_LENGTH,
-            x + offset, y + offset, z - CUBE_LENGTH,
-            // BOTTOM QUAD
-            x + offset, y - offset, z - CUBE_LENGTH,
-            x - offset, y - offset, z - CUBE_LENGTH,
-            x - offset, y - offset, z,
-            x + offset, y - offset, z,
-            // FRONT QUAD
-            x + offset, y + offset, z - CUBE_LENGTH,
-            x - offset, y + offset, z - CUBE_LENGTH,
-            x - offset, y - offset, z - CUBE_LENGTH,
-            x + offset, y - offset, z - CUBE_LENGTH,
-            // BACK QUAD
-            x + offset, y - offset, z,
-            x - offset, y - offset, z,
-            x - offset, y + offset, z,
-            x + offset, y + offset, z,
-            // LEFT QUAD
-            x - offset, y + offset, z - CUBE_LENGTH,
-            x - offset, y + offset, z,
-            x - offset, y - offset, z,
-            x - offset, y - offset, z - CUBE_LENGTH,
-            // RIGHT QUAD
-            x + offset, y + offset, z,
-            x + offset, y + offset, z - CUBE_LENGTH,
-            x + offset, y - offset, z - CUBE_LENGTH,
-            x + offset, y - offset, z
-        };
-    }
-    
     private float[] getCubeColor(Block block){
 //        switch(block.getID()){
 //            case 1:
@@ -150,25 +151,20 @@ public class Chunk {
     }
     
     public Chunk(int startX, int startY, int startZ){
-        try{
-            texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("assets/terrain.png"));
-        }catch(Exception e){
-            System.out.println("Exception in Chunk constructor");
-        }
-
+        texture = MCTexture.loadTexture();
         blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
         
         for (int x = 0; x < CHUNK_SIZE; x++) {
             for (int y = 0; y < CHUNK_SIZE; y++) {
                 for (int z = 0; z < CHUNK_SIZE; z++) {
                     if(r.nextFloat() > 0.7f){
-                        blocks[x][y][z] = new Block(Block.BlockType.Grass);
+                        blocks[x][y][z] = new Block(BlockType.Grass);
                     }else if(r.nextFloat() > 0.4f){
-                        blocks[x][y][z] = new Block(Block.BlockType.Dirt);
+                        blocks[x][y][z] = new Block(BlockType.Dirt);
                     }else if(r.nextFloat() > 0.2f){
-                        blocks[x][y][z] = new Block(Block.BlockType.Water);
+                        blocks[x][y][z] = new Block(BlockType.Water);
                     }else{
-                        blocks[x][y][z] = new Block(Block.BlockType.Grass); //default
+                        blocks[x][y][z] = new Block(BlockType.Grass); //default
                     }
                 }
             }
