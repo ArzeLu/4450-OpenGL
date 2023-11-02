@@ -17,13 +17,14 @@ import org.newdawn.slick.util.ResourceLoader;
 public class Chunk {
     static final int CHUNK_SIZE = 30;
     static final int CUBE_LENGTH = 2;
+    final private Random r = new Random();
     private Block[][][] blocks;
+    private Texture texture;
     private int VBOVertexHandle;
     private int VBOColorHandle;
     private int VBOTextureHandle;
-    private Texture texture;
     private int startX, startY, startZ;
-    private Random r;
+    
     
     public void render(){
         glPushMatrix();
@@ -39,49 +40,57 @@ public class Chunk {
     
     public static float[] createTexCube(float x, float y, Block block){
         float offset = (1024f / 16) / 1024f;
+        float[] defaultTexture = new float[]{
+            // BOTTOM QUAD(DOWN=+Y)
+            x + offset*3, y + offset*10,
+            x + offset*2, y + offset*10,
+            x + offset*2, y + offset*9,
+            x + offset*3, y + offset*9,
+            // TOP!
+            x + offset*3, y + offset*1,
+            x + offset*2, y + offset*1,
+            x + offset*2, y + offset*0,
+            x + offset*3, y + offset*0,
+            // FRONT QUAD
+            x + offset*3, y + offset*0,
+            x + offset*4, y + offset*0,
+            x + offset*4, y + offset*1,
+            x + offset*3, y + offset*1,
+            // BACK QUAD
+            x + offset*4, y + offset*1,
+            x + offset*3, y + offset*1,
+            x + offset*3, y + offset*0,
+            x + offset*4, y + offset*0,
+            // LEFT QUAD
+            x + offset*3, y + offset*0,
+            x + offset*4, y + offset*0,
+            x + offset*4, y + offset*1,
+            x + offset*3, y + offset*1,
+            // RIGHT QUAD
+            x + offset*3, y + offset*0,
+            x + offset*4, y + offset*0,
+            x + offset*4, y + offset*1,
+            x + offset*3, y + offset*1
+        };
         
-        switch(block.getID()){
-            case 1:
-                return new float[]{
-                    // BOTTOM QUAD(DOWN=+Y)
-                    x + offset*3, y + offset*10,
-                    x + offset*2, y + offset*10,
-                    x + offset*2, y + offset*9,
-                    x + offset*3, y + offset*9,
-                    // TOP!
-                    x + offset*3, y + offset*1,
-                    x + offset*2, y + offset*1,
-                    x + offset*2, y + offset*0,
-                    x + offset*3, y + offset*0,
-                    // FRONT QUAD
-                    x + offset*3, y + offset*0,
-                    x + offset*4, y + offset*0,
-                    x + offset*4, y + offset*1,
-                    x + offset*3, y + offset*1,
-                    // BACK QUAD
-                    x + offset*4, y + offset*1,
-                    x + offset*3, y + offset*1,
-                    x + offset*3, y + offset*0,
-                    x + offset*4, y + offset*0,
-                    // LEFT QUAD
-                    x + offset*3, y + offset*0,
-                    x + offset*4, y + offset*0,
-                    x + offset*4, y + offset*1,
-                    x + offset*3, y + offset*1,
-                    // RIGHT QUAD
-                    x + offset*3, y + offset*0,
-                    x + offset*4, y + offset*0,
-                    x + offset*4, y + offset*1,
-                    x + offset*3, y + offset*1
-                };
+        switch(block.getType()){
+            case Grass:
+                return defaultTexture;
+            case Sand:
+            case Water:
+            case Dirt:
+            case Stone:
+            case Bedrock:
         }
+        
+        return defaultTexture;
     }
     
     public void rebuildMesh(float startX, float startY, float startZ){
         VBOColorHandle = glGenBuffers();
         VBOVertexHandle = glGenBuffers();
         VBOTextureHandle = glGenBuffers();
-        FloatBuffer vertexTextureData = BufferUtils.createFloatBuffer((CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) * 6 * 12);
+        FloatBuffer vertexTextureData = BufferUtils.createFloatBuffer((int) (Math.pow(CHUNK_SIZE, 3.0f) * 72));
         FloatBuffer vertexPositionData = BufferUtils.createFloatBuffer((int) (Math.pow(CHUNK_SIZE, 3.0f) * 72));
         FloatBuffer vertexColorData = BufferUtils.createFloatBuffer((int) (Math.pow(CHUNK_SIZE, 3.0f) * 72));
         
@@ -94,7 +103,6 @@ public class Chunk {
                 }
             }
         }
-        
         vertexTextureData.flip();
         vertexColorData.flip();
         vertexPositionData.flip();
@@ -169,32 +177,29 @@ public class Chunk {
     
     public Chunk(int startX, int startY, int startZ){
         try{
-            texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("terrain.png"));
+            texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("assets/terrain.png"));
         }catch(Exception e){
             System.out.println("Exception in Chunk constructor");
         }
-        
-        r = new Random();
+
         blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
+        
         for (int x = 0; x < CHUNK_SIZE; x++) {
             for (int y = 0; y < CHUNK_SIZE; y++) {
                 for (int z = 0; z < CHUNK_SIZE; z++) {
                     if(r.nextFloat() > 0.7f){
-                        blocks[x][y][z] = new
-                        Block(Block.BlockType.Grass);
+                        blocks[x][y][z] = new Block(Block.BlockType.Grass);
                     }else if(r.nextFloat() > 0.4f){
-                        blocks[x][y][z] = new
-                        Block(Block.BlockType.Dirt);
+                        blocks[x][y][z] = new Block(Block.BlockType.Dirt);
                     }else if(r.nextFloat() > 0.2f){
-                        blocks[x][y][z] = new
-                        Block(Block.BlockType.Water);
+                        blocks[x][y][z] = new Block(Block.BlockType.Water);
                     }else{
-                        blocks[x][y][z] = new
-                        Block(Block.BlockType.Grass); //default
+                        blocks[x][y][z] = new Block(Block.BlockType.Grass); //default
                     }
                 }
             }
         }
+        
         VBOColorHandle = glGenBuffers();
         VBOVertexHandle = glGenBuffers();
         VBOTextureHandle = glGenBuffers();
