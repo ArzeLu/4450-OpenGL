@@ -11,8 +11,6 @@ import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-import org.newdawn.slick.util.ResourceLoader;
 
 public class Chunk {
     static final int CHUNK_SIZE = 30;
@@ -27,7 +25,6 @@ public class Chunk {
     
     
     public void render(){
-        texture.bind();
         glPushMatrix();
         glBindBuffer(GL_ARRAY_BUFFER, VBOVertexHandle);
         glBindTexture(GL_TEXTURE_2D, 1);
@@ -37,64 +34,6 @@ public class Chunk {
         glColorPointer(3, GL_FLOAT, 0, 0L);
         glDrawArrays(GL_QUADS, 0, CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE * 24);
         glPopMatrix();
-    }
-    
-    public static float[] createCube(float x, float y, float z){
-        int offset = CUBE_LENGTH / 2;
-        return new float[]{
-            // TOP QUAD
-            x + offset, y + offset, z,
-            x - offset, y + offset, z,
-            x - offset, y + offset, z - CUBE_LENGTH,
-            x + offset, y + offset, z - CUBE_LENGTH,
-            // BOTTOM QUAD
-            x + offset, y - offset, z - CUBE_LENGTH,
-            x - offset, y - offset, z - CUBE_LENGTH,
-            x - offset, y - offset, z,
-            x + offset, y - offset, z,
-            // FRONT QUAD
-            x + offset, y + offset, z - CUBE_LENGTH,
-            x - offset, y + offset, z - CUBE_LENGTH,
-            x - offset, y - offset, z - CUBE_LENGTH,
-            x + offset, y - offset, z - CUBE_LENGTH,
-            // BACK QUAD
-            x + offset, y - offset, z,
-            x - offset, y - offset, z,
-            x - offset, y + offset, z,
-            x + offset, y + offset, z,
-            // LEFT QUAD
-            x - offset, y + offset, z - CUBE_LENGTH,
-            x - offset, y + offset, z,
-            x - offset, y - offset, z,
-            x - offset, y - offset, z - CUBE_LENGTH,
-            // RIGHT QUAD
-            x + offset, y + offset, z,
-            x + offset, y + offset, z - CUBE_LENGTH,
-            x + offset, y - offset, z - CUBE_LENGTH,
-            x + offset, y - offset, z
-        };
-    }
-    
-    public static float[] createTexCube(Block block){
-        float offset = (1024f / 16) / 1024f;
-        float[] defaultTexture = MCTexture.grassTexCoords;
-        
-        switch(block.getType()){
-            case Grass:
-                return MCTexture.grassTexCoords;
-            case Sand:
-                return MCTexture.sandTexCoords;
-            case Water:
-                return MCTexture.waterTexCoords;
-            case Dirt:
-                return MCTexture.dirtTexCoords;
-            case Stone:
-                return MCTexture.stoneTexCoords;
-            case Bedrock:
-                return MCTexture.bedrockTexCoords;
-        }
-        
-        return defaultTexture;
     }
     
     public void rebuildMesh(float startX, float startY, float startZ){
@@ -108,8 +47,8 @@ public class Chunk {
         for(float x = 0; x < CHUNK_SIZE; x++){
             for(float z = 0; z < CHUNK_SIZE; z++){
                 for(float y = 0; y < CHUNK_SIZE; y++){
-                    vertexTextureData.put(createTexCube(blocks[(int)x][(int)y][(int)z]));
-                    vertexPositionData.put(createCube((float)(startX + x * CUBE_LENGTH), (float)(y * CUBE_LENGTH + (int)(CHUNK_SIZE * 0.8)), (float)(startZ + z * CUBE_LENGTH)));
+                    vertexTextureData.put(TextureMaker.createTexCube(blocks[(int)x][(int)y][(int)z]));
+                    vertexPositionData.put(TextureMaker.createCube((float)(startX + x * CUBE_LENGTH), (float)(y * CUBE_LENGTH + (int)(CHUNK_SIZE * 0.8)), (float)(startZ + z * CUBE_LENGTH)));
                     vertexColorData.put(createCubeVertexCol(getCubeColor(blocks[(int)x][(int)y][(int)z])));
                 }
             }
@@ -139,19 +78,19 @@ public class Chunk {
     }
     
     private float[] getCubeColor(Block block){
-//        switch(block.getID()){
-//            case 1:
-//                return new float[]{0, 1, 0};
-//            case 2:
-//                return new float[]{1, 0.5f, 0};
-//            case 3:
-//                return new float[]{0, 0f, 1f};
-//        }
+        switch(block.getID()){
+            case 1:
+                return new float[]{0, 1, 0};
+            case 2:
+                return new float[]{1, 0.5f, 0};
+            case 3:
+                return new float[]{0, 0f, 1f};
+        }
         return new float[]{1, 1, 1};
     }
     
     public Chunk(int startX, int startY, int startZ){
-        texture = MCTexture.loadTexture();
+        texture = TextureMaker.loadTexture();
         blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
         
         for (int x = 0; x < CHUNK_SIZE; x++) {

@@ -24,7 +24,6 @@ public class Project3 {
     
     private void render(){
         try{
-            texture.bind();
             glBegin(GL_QUADS);
 
             glTexCoord2f(OFFSET * 3, OFFSET * 0); 
@@ -54,7 +53,7 @@ public class Project3 {
         //hide the mouse
         Mouse.setGrabbed(true);
         
-        texture = MCTexture.loadTexture();
+        texture = TextureMaker.loadTexture();
         
         while(!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
             time = Sys.getTime();
@@ -103,7 +102,7 @@ public class Project3 {
             
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
-            //Chunk chunk = new Chunk(0, 0, 0);
+            texture.bind();
             render();
             
             Display.update();
@@ -118,10 +117,10 @@ public class Project3 {
         
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_COLOR_ARRAY);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_TEXTURE_2D);
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
+        
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         

@@ -8,8 +8,9 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
-public class MCTexture {
+public class TextureMaker {
     final private static float OFFSET = (1024f / 16) / 1024f;
+    final private static int CUBE_LENGTH = 2;
     
     final static float grassTexCoords[] = new float[]{
         //Bottom (x, y)
@@ -242,7 +243,7 @@ public class MCTexture {
         OFFSET * 3, OFFSET * 1,
     };
     
-    public MCTexture(){};
+    public TextureMaker(){};
     
     public static Texture loadTexture(){
         Texture texture = null;
@@ -252,5 +253,60 @@ public class MCTexture {
             System.out.println("Exception in Chunk constructor");
         }
         return texture;
+    }
+    
+    public static float[] createCube(float x, float y, float z){
+        int offset = CUBE_LENGTH / 2;
+        return new float[]{
+            // TOP QUAD
+            x + offset, y + offset, z,
+            x - offset, y + offset, z,
+            x - offset, y + offset, z - CUBE_LENGTH,
+            x + offset, y + offset, z - CUBE_LENGTH,
+            // BOTTOM QUAD
+            x + offset, y - offset, z - CUBE_LENGTH,
+            x - offset, y - offset, z - CUBE_LENGTH,
+            x - offset, y - offset, z,
+            x + offset, y - offset, z,
+            // FRONT QUAD
+            x + offset, y + offset, z - CUBE_LENGTH,
+            x - offset, y + offset, z - CUBE_LENGTH,
+            x - offset, y - offset, z - CUBE_LENGTH,
+            x + offset, y - offset, z - CUBE_LENGTH,
+            // BACK QUAD
+            x + offset, y - offset, z,
+            x - offset, y - offset, z,
+            x - offset, y + offset, z,
+            x + offset, y + offset, z,
+            // LEFT QUAD
+            x - offset, y + offset, z - CUBE_LENGTH,
+            x - offset, y + offset, z,
+            x - offset, y - offset, z,
+            x - offset, y - offset, z - CUBE_LENGTH,
+            // RIGHT QUAD
+            x + offset, y + offset, z,
+            x + offset, y + offset, z - CUBE_LENGTH,
+            x + offset, y - offset, z - CUBE_LENGTH,
+            x + offset, y - offset, z
+        };
+    }
+    
+    public static float[] createTexCube(Block block){        
+        switch(block.getType()){
+            case Grass:
+                return grassTexCoords;
+            case Sand:
+                return sandTexCoords;
+            case Water:
+                return waterTexCoords;
+            case Dirt:
+                return dirtTexCoords;
+            case Stone:
+                return stoneTexCoords;
+            case Bedrock:
+                return bedrockTexCoords;
+        }
+        
+        return grassTexCoords;
     }
 }
