@@ -20,7 +20,7 @@ public class Project3 {
     final private CameraController camera = new CameraController(0f, 0f, 0f);
     private DisplayMode displayMode;
     final private static float OFFSET = (1024f / 16) / 1024f;
-    private Texture texture;
+    private TextureController texture;
     
     private void render(){
         try{
@@ -53,8 +53,8 @@ public class Project3 {
         //hide the mouse
         Mouse.setGrabbed(true);
         
-        texture = TextureMaker.loadTexture();
-        
+        TextureController.loadTexture();
+        Chunk chunk = new Chunk(0, 0, 0);
         while(!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
             time = Sys.getTime();
             lastTime = time;
@@ -102,8 +102,9 @@ public class Project3 {
             
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
-            texture.bind();
-            render();
+            TextureController.bindTexture();
+            
+            chunk.render();
             
             Display.update();
             Display.sync(60);

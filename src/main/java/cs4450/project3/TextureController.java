@@ -8,9 +8,10 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
-public class TextureMaker {
+public class TextureController {
     final private static float OFFSET = (1024f / 16) / 1024f;
     final private static int CUBE_LENGTH = 2;
+    private static Texture texture;
     
     final static float grassTexCoords[] = new float[]{
         //Bottom (x, y)
@@ -210,49 +211,19 @@ public class TextureMaker {
         OFFSET * 1, OFFSET * 2,
     };
     
-    final static float defaultTexCoords[] = new float[]{
-        //Bottom (x, y)
-        OFFSET * 2, OFFSET * 0,
-        OFFSET * 3, OFFSET * 0,
-        OFFSET * 3, OFFSET * 1,
-        OFFSET * 2, OFFSET * 1,
-        //Top
-        OFFSET * 12, OFFSET * 12,
-        OFFSET * 13, OFFSET * 12,
-        OFFSET * 13, OFFSET * 13,
-        OFFSET * 12, OFFSET * 13,
-        //Front
-        OFFSET * 3, OFFSET * 0,
-        OFFSET * 4, OFFSET * 0,
-        OFFSET * 4, OFFSET * 1,
-        OFFSET * 3, OFFSET * 1,
-        //Back
-        OFFSET * 3, OFFSET * 0,
-        OFFSET * 4, OFFSET * 0,
-        OFFSET * 4, OFFSET * 1,
-        OFFSET * 3, OFFSET * 1,
-        //Left
-        OFFSET * 3, OFFSET * 0,
-        OFFSET * 4, OFFSET * 0,
-        OFFSET * 4, OFFSET * 1,
-        OFFSET * 3, OFFSET * 1,
-        //Right
-        OFFSET * 3, OFFSET * 0,
-        OFFSET * 4, OFFSET * 0,
-        OFFSET * 4, OFFSET * 1,
-        OFFSET * 3, OFFSET * 1,
-    };
+    public TextureController(){};
     
-    public TextureMaker(){};
+    public static void bindTexture(){
+        texture.bind();
+    }
     
-    public static Texture loadTexture(){
-        Texture texture = null;
+    public static void loadTexture(){
+        texture = null;
         try{
             texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("terrain.png"));
         }catch(Exception e){
             System.out.println("Exception in Chunk constructor");
         }
-        return texture;
     }
     
     public static float[] createCube(float x, float y, float z){
