@@ -14,32 +14,15 @@ import org.lwjgl.opengl.DisplayMode;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.util.glu.GLU;
 
-import org.newdawn.slick.opengl.Texture;
-
 public class Project3 {   
     final private CameraController camera = new CameraController(0f, 0f, 0f);
+    final private TextureController texture = new TextureController();
     private DisplayMode displayMode;
     final private static float OFFSET = (1024f / 16) / 1024f;
-    private TextureController texture;
+    
     
     private void render(){
-        try{
-            glBegin(GL_QUADS);
 
-            glTexCoord2f(OFFSET * 3, OFFSET * 0); 
-            glVertex3f(1, 1, 1);
-            glTexCoord2f(OFFSET * 4, OFFSET * 0);
-            glVertex3f(1, 1, -1);
-            glTexCoord2f(OFFSET * 4, OFFSET * 1);
-            glVertex3f(1, -1, -1);
-            glTexCoord2f(OFFSET * 3, OFFSET * 1);
-            glVertex3f(1, -1, 1);
-           
-            glEnd();
-        }catch(Exception e){
-            //handles le eggcceppccioonn
-            System.out.print(e);
-        } 
     }
     
     public void gameLoop(){
@@ -53,8 +36,9 @@ public class Project3 {
         //hide the mouse
         Mouse.setGrabbed(true);
         
-        TextureController.loadTexture();
         Chunk chunk = new Chunk(0, 0, 0);
+        texture.loadTexture();
+        
         while(!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
             time = Sys.getTime();
             lastTime = time;
@@ -102,7 +86,7 @@ public class Project3 {
             
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
-            TextureController.bindTexture();
+            texture.bindTexture();
             
             chunk.render();
             

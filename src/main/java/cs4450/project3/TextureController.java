@@ -13,32 +13,32 @@ public class TextureController {
     final private static int CUBE_LENGTH = 2;
     private static Texture texture;
     
-    final static float grassTexCoords[] = new float[]{
-        //Bottom (x, y)
-        OFFSET * 2, OFFSET * 0,
-        OFFSET * 3, OFFSET * 0,
-        OFFSET * 3, OFFSET * 1,
-        OFFSET * 2, OFFSET * 1,
+    final float grassTexCoords[] = new float[]{
         //Top
         OFFSET * 12, OFFSET * 12,
         OFFSET * 13, OFFSET * 12,
         OFFSET * 13, OFFSET * 13,
         OFFSET * 12, OFFSET * 13,
+        //Bottom (x, y)
+        OFFSET * 2, OFFSET * 0,
+        OFFSET * 3, OFFSET * 0,
+        OFFSET * 3, OFFSET * 1,
+        OFFSET * 2, OFFSET * 1,        
         //Front
         OFFSET * 3, OFFSET * 0,
         OFFSET * 4, OFFSET * 0,
         OFFSET * 4, OFFSET * 1,
         OFFSET * 3, OFFSET * 1,
-        //Back
+        //Back (this one vertex mapping order is different than other faces)
+        OFFSET * 4, OFFSET * 1,
+        OFFSET * 3, OFFSET * 1,
+        OFFSET * 3, OFFSET * 0,
+        OFFSET * 4, OFFSET * 0,
+        //Left
         OFFSET * 3, OFFSET * 0,
         OFFSET * 4, OFFSET * 0,
         OFFSET * 4, OFFSET * 1,
         OFFSET * 3, OFFSET * 1,
-        //Left
-        OFFSET * 3, OFFSET * 0,
-        OFFSET * 4, OFFSET * 0,
-        OFFSET * 4, OFFSET * 1,
-        OFFSET * 3, OFFSET * 1,
         //Right
         OFFSET * 3, OFFSET * 0,
         OFFSET * 4, OFFSET * 0,
@@ -46,13 +46,13 @@ public class TextureController {
         OFFSET * 3, OFFSET * 1,
     };
     
-    final static float sandTexCoords[] = new float[]{
-        //Bottom
+    final float sandTexCoords[] = new float[]{
+        //Top
         OFFSET * 2, OFFSET * 1,
         OFFSET * 3, OFFSET * 1,
         OFFSET * 3, OFFSET * 2,
         OFFSET * 2, OFFSET * 2,
-        //Top
+        //Bottom
         OFFSET * 2, OFFSET * 1,
         OFFSET * 3, OFFSET * 1,
         OFFSET * 3, OFFSET * 2,
@@ -79,13 +79,13 @@ public class TextureController {
         OFFSET * 2, OFFSET * 2,
     };
     
-    final static float waterTexCoords[] = new float[]{
-        //Bottom
+    final float waterTexCoords[] = new float[]{
+        //Top
         OFFSET * 13, OFFSET * 12,
         OFFSET * 14, OFFSET * 12,
         OFFSET * 14, OFFSET * 13,
         OFFSET * 13, OFFSET * 13,
-        //Top
+        //Bottom
         OFFSET * 13, OFFSET * 12,
         OFFSET * 14, OFFSET * 12,
         OFFSET * 14, OFFSET * 13,
@@ -112,13 +112,13 @@ public class TextureController {
         OFFSET * 13, OFFSET * 13,
     };
     
-    final static float dirtTexCoords[] = new float[]{
-        //Bottom
+    final float dirtTexCoords[] = new float[]{
+        //Top
         OFFSET * 2, OFFSET * 0,
         OFFSET * 3, OFFSET * 0,
         OFFSET * 3, OFFSET * 1,
         OFFSET * 2, OFFSET * 1,
-        //Top
+        //Bottom
         OFFSET * 2, OFFSET * 0,
         OFFSET * 3, OFFSET * 0,
         OFFSET * 3, OFFSET * 1,
@@ -145,13 +145,13 @@ public class TextureController {
         OFFSET * 2, OFFSET * 1,
     };
     
-    final static float stoneTexCoords[] = new float[]{
-        //Bottom
+    final float stoneTexCoords[] = new float[]{
+        //Top
         OFFSET * 1, OFFSET * 0,
         OFFSET * 2, OFFSET * 0,
         OFFSET * 2, OFFSET * 1,
         OFFSET * 1, OFFSET * 1,
-        //Top
+        //Bottom
         OFFSET * 1, OFFSET * 0,
         OFFSET * 2, OFFSET * 0,
         OFFSET * 2, OFFSET * 1,
@@ -178,13 +178,13 @@ public class TextureController {
         OFFSET * 1, OFFSET * 1,
     };
     
-    final static float bedrockTexCoords[] = new float[]{
-        //Bottom
+    final float bedrockTexCoords[] = new float[]{
+        //Top
         OFFSET * 1, OFFSET * 1,
         OFFSET * 2, OFFSET * 1,
         OFFSET * 2, OFFSET * 2,
         OFFSET * 1, OFFSET * 2,
-        //Top
+        //Bottom
         OFFSET * 1, OFFSET * 1,
         OFFSET * 2, OFFSET * 1,
         OFFSET * 2, OFFSET * 2,
@@ -213,11 +213,11 @@ public class TextureController {
     
     public TextureController(){};
     
-    public static void bindTexture(){
+    public void bindTexture(){
         texture.bind();
     }
     
-    public static void loadTexture(){
+    public void loadTexture(){
         texture = null;
         try{
             texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("terrain.png"));
@@ -226,7 +226,22 @@ public class TextureController {
         }
     }
     
-    public static float[] createCube(float x, float y, float z){
+    public Block chooseBlock(float chance){
+        if(chance > 0.7f){
+            return new Block(BlockType.Grass);
+        }else if(chance > 0.5f){
+            return new Block(BlockType.Dirt);
+        }else if(chance > 0.4f){
+            return new Block(BlockType.Sand);
+        }else if(chance > 0.2f){
+            return new Block(BlockType.Stone);
+        }else if(chance > 0.1f){
+            return new Block(BlockType.Bedrock);
+        }
+        return new Block(BlockType.Water);
+    }
+    
+    public float[] createCube(float x, float y, float z){
         int offset = CUBE_LENGTH / 2;
         return new float[]{
             // TOP QUAD
@@ -262,7 +277,7 @@ public class TextureController {
         };
     }
     
-    public static float[] createTexCube(Block block){        
+    public float[] createTexCube(Block block){        
         switch(block.getType()){
             case Grass:
                 return grassTexCoords;

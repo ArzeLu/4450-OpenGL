@@ -6,3 +6,6 @@ https://stackoverflow.com/questions/10697161/why-floatbuffer-instead-of-float
 https://www.youtube.com/watch?v=u-00hjlfMKc&t=3s
 https://stackoverflow.com/questions/25431399/c-drawing-arrays-with-opengl
 https://stackoverflow.com/questions/25412767/opengl-glbindbuffer0-outside-vao
+https://www.youtube.com/watch?v=CSa5O6knuwI
+https://stackoverflow.com/questions/18279456/any-simplex-noise-tutorials-or-resources
+https://www.reddit.com/r/proceduralgeneration/comments/bz4pt8/can_someone_run_me_through_the_basics_of_using/

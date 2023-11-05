@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+// Made by Arze, Harshitha, Rucha
 package cs4450.project3;
 
 //class imports
@@ -10,18 +11,22 @@ import java.util.Random;
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
-import org.newdawn.slick.opengl.Texture;
+
+//my imports
+import java.lang.Math;
 
 public class Chunk {
-    static final int CHUNK_SIZE = 30;
+    static final int CHUNK_SIZE = 100;
     static final int CUBE_LENGTH = 2;
+    static final int MAX_HEIGHT = CHUNK_SIZE / 2;
     final private Random r;
     private Block[][][] blocks;
+    private SimplexNoise simplexNoise;
+    private TextureController texture;
     private int VBOVertexHandle;
     private int VBOColorHandle;
     private int VBOTextureHandle;
     private int startX, startY, startZ;
-    
     
     public void render(){
         glPushMatrix();
@@ -64,12 +69,15 @@ public class Chunk {
         FloatBuffer vertexPositionData = BufferUtils.createFloatBuffer(CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE * 6 * 12);
         FloatBuffer vertexColorData = BufferUtils.createFloatBuffer(CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE * 6 * 12);
         
-        for(float x = 0; x < CHUNK_SIZE; x++){
-            for(float z = 0; z < CHUNK_SIZE; z++){
-                for(float y = 0; y < CHUNK_SIZE; y++){
-                    vertexTextureData.put(TextureController.createTexCube(blocks[(int)x][(int)y][(int)z]));
-                    vertexPositionData.put(TextureController.createCube((float)(startX + x * CUBE_LENGTH), (float)(y * CUBE_LENGTH + (int)(CHUNK_SIZE * 0.8)), (float)(startZ + z * CUBE_LENGTH)));
-                    vertexColorData.put(createCubeVertexCol(getCubeColor(blocks[(int)x][(int)y][(int)z])));
+        for(int x = 0; x < CHUNK_SIZE; x++){
+            for(int z = 0; z < CHUNK_SIZE; z++){
+                int maxHeight = (int)((simplexNoise.getNoise(x, z)) * 20 + 10);
+                for(int y = 0; y < maxHeight; y++){
+                    blocks[x][y][z] = texture.chooseBlock(r.nextFloat());
+
+                    vertexTextureData.put(texture.createTexCube(blocks[x][y][z]));
+                    vertexPositionData.put(texture.createCube((float)(startX + x * CUBE_LENGTH), (float)(y * CUBE_LENGTH + startY), (float)(startZ + z * CUBE_LENGTH)));
+                    vertexColorData.put(createCubeVertexCol(getCubeColor(blocks[x][y][z])));
                 }
             }
         }
@@ -91,31 +99,19 @@ public class Chunk {
     }
     
     public Chunk(int startX, int startY, int startZ){
+        texture = new TextureController();
         blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
-        r = new Random();
-        
-        for (int x = 0; x < CHUNK_SIZE; x++) {
-            for (int y = 0; y < CHUNK_SIZE; y++) {
-                for (int z = 0; z < CHUNK_SIZE; z++) {
-                    if(r.nextFloat() > 0.7f){
-                        blocks[x][y][z] = new Block(BlockType.Grass);
-                    }else if(r.nextFloat() > 0.4f){
-                        blocks[x][y][z] = new Block(BlockType.Dirt);
-                    }else if(r.nextFloat() > 0.2f){
-                        blocks[x][y][z] = new Block(BlockType.Water);
-                    }else{
-                        blocks[x][y][z] = new Block(BlockType.Grass); //default
-                    }
-                }
-            }
-        }
+        r = new Random((int)System.currentTimeMillis());
+        simplexNoise = new SimplexNoise(MAX_HEIGHT, 0.15f, (int)System.currentTimeMillis());
         
         VBOColorHandle = glGenBuffers();
         VBOVertexHandle = glGenBuffers();
         VBOTextureHandle = glGenBuffers();
+        
         this.startX = startX;
         this.startY = startY;
         this.startZ = startZ;
+
         rebuildMesh(startX, startY, startZ);
     }
 }

@@ -1,3 +1,6 @@
+// Made by Arze, Harshitha, Rucha
+package cs4450.project3;
+
 import java.util.Random;
 
 public class SimplexNoise {
@@ -29,10 +32,6 @@ public class SimplexNoise {
 
             frequencys[i] = Math.pow(2,i);
             amplitudes[i] = Math.pow(persistence,octaves.length-i);
-
-
-
-
         }
 
     }
@@ -49,12 +48,11 @@ public class SimplexNoise {
           result=result+octaves[i].noise(x/frequencys[i], y/frequencys[i])* amplitudes[i];
         }
 
-
         return result;
 
     }
 
-    public double getNoise(int x,int y, int z){
+    public double getNoise(int x, int y, int z){
 
         double result=0;
 
@@ -64,7 +62,6 @@ public class SimplexNoise {
 
           result=result+octaves[i].noise(x/frequency, y/frequency,z/frequency)* amplitude;
         }
-
 
         return result;
 
