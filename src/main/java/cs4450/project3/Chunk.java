@@ -12,9 +12,6 @@ import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 
-//my imports
-import java.lang.Math;
-
 public class Chunk {
     static final int CHUNK_SIZE = 100;
     static final int CUBE_LENGTH = 2;
@@ -24,7 +21,6 @@ public class Chunk {
     private SimplexNoise simplexNoise;
     private TextureController texture;
     private int VBOVertexHandle;
-    private int VBOColorHandle;
     private int VBOTextureHandle;
     private int startX, startY, startZ;
     
@@ -35,39 +31,15 @@ public class Chunk {
         glTexCoordPointer(2, GL_FLOAT, 0, 0L);
         glBindBuffer(GL_ARRAY_BUFFER, VBOVertexHandle);
         glVertexPointer(3, GL_FLOAT, 0, 0L);
-        glBindBuffer(GL_ARRAY_BUFFER, VBOColorHandle);
-        glColorPointer(3, GL_FLOAT, 0, 0L);
         glDrawArrays(GL_QUADS, 0, CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE * 24);
         glPopMatrix();
     }
     
-    private float[] createCubeVertexCol(float[] CubeColorArray){
-        float[] cubeColors = new float[CubeColorArray.length * 4 * 6];
-        for(int i = 0; i < cubeColors.length; i++){
-            cubeColors[i] = CubeColorArray[i % CubeColorArray.length];
-        }
-        return cubeColors;
-    }
-    
-    private float[] getCubeColor(Block block){
-//        switch(block.getID()){
-//            case 1:
-//                return new float[]{0, 1, 0};
-//            case 2:
-//                return new float[]{1, 0.5f, 0};
-//            case 3:
-//                return new float[]{0, 0f, 1f};
-//        }
-        return new float[]{1, 1, 1};
-    }
-    
     public void rebuildMesh(float startX, float startY, float startZ){
-        VBOColorHandle = glGenBuffers();
         VBOVertexHandle = glGenBuffers();
         VBOTextureHandle = glGenBuffers();
         FloatBuffer vertexTextureData = BufferUtils.createFloatBuffer(CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE * 6 * 12); //6 sets of coords 12 each. Refer to TextureMaker.java
         FloatBuffer vertexPositionData = BufferUtils.createFloatBuffer(CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE * 6 * 12);
-        FloatBuffer vertexColorData = BufferUtils.createFloatBuffer(CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE * 6 * 12);
         
         for(int x = 0; x < CHUNK_SIZE; x++){
             for(int z = 0; z < CHUNK_SIZE; z++){
@@ -77,12 +49,10 @@ public class Chunk {
 
                     vertexTextureData.put(texture.createTexCube(blocks[x][y][z]));
                     vertexPositionData.put(texture.createCube((float)(startX + x * CUBE_LENGTH), (float)(y * CUBE_LENGTH + startY), (float)(startZ + z * CUBE_LENGTH)));
-                    vertexColorData.put(createCubeVertexCol(getCubeColor(blocks[x][y][z])));
                 }
             }
         }
         vertexTextureData.flip();
-        vertexColorData.flip();
         vertexPositionData.flip();
         
         glBindBuffer(GL_ARRAY_BUFFER, VBOTextureHandle);
@@ -92,10 +62,6 @@ public class Chunk {
         glBindBuffer(GL_ARRAY_BUFFER, VBOVertexHandle);
         glBufferData(GL_ARRAY_BUFFER, vertexPositionData, GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);        
-        
-        glBindBuffer(GL_ARRAY_BUFFER, VBOColorHandle);
-        glBufferData(GL_ARRAY_BUFFER, vertexColorData, GL_STATIC_DRAW);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
     
     public Chunk(int startX, int startY, int startZ){
@@ -104,7 +70,6 @@ public class Chunk {
         r = new Random((int)System.currentTimeMillis());
         simplexNoise = new SimplexNoise(MAX_HEIGHT, 0.15f, (int)System.currentTimeMillis());
         
-        VBOColorHandle = glGenBuffers();
         VBOVertexHandle = glGenBuffers();
         VBOTextureHandle = glGenBuffers();
         

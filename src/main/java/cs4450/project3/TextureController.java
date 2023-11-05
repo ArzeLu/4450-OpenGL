@@ -227,7 +227,7 @@ public class TextureController {
     }
     
     public Block chooseBlock(float chance){
-        if(chance > 0.7f){
+        if(chance > 0.6f){
             return new Block(BlockType.Grass);
         }else if(chance > 0.5f){
             return new Block(BlockType.Dirt);

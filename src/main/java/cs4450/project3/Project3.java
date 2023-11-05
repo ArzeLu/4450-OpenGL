@@ -17,12 +17,13 @@ import org.lwjgl.util.glu.GLU;
 public class Project3 {   
     final private CameraController camera = new CameraController(0f, 0f, 0f);
     final private TextureController texture = new TextureController();
+    private Chunk chunk;
     private DisplayMode displayMode;
     final private static float OFFSET = (1024f / 16) / 1024f;
     
     
     private void render(){
-
+        chunk.render();
     }
     
     public void gameLoop(){
@@ -36,7 +37,7 @@ public class Project3 {
         //hide the mouse
         Mouse.setGrabbed(true);
         
-        Chunk chunk = new Chunk(0, 0, 0);
+        chunk = new Chunk(0, 0, 0);
         texture.loadTexture();
         
         while(!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
@@ -88,7 +89,7 @@ public class Project3 {
             
             texture.bindTexture();
             
-            chunk.render();
+            render();
             
             Display.update();
             Display.sync(60);
@@ -98,10 +99,9 @@ public class Project3 {
 
     //Initiate GL process
     private void initGL(){
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClearColor(0.47f, 0.65f, 1.0f, 0.0f);
         
         glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_COLOR_ARRAY);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_TEXTURE_2D);
