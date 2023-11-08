@@ -7,7 +7,6 @@ package cs4450.project3;
 
 //class imports
 import java.nio.FloatBuffer;
-import java.util.Random;
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -16,7 +15,6 @@ public class Chunk {
     static final int CHUNK_SIZE = 100;
     static final int CUBE_LENGTH = 2;
     static final int MAX_HEIGHT = CHUNK_SIZE / 2;
-    final private Random r;
     private Block[][][] blocks;
     private SimplexNoise simplexNoise;
     private TextureController texture;
@@ -42,10 +40,13 @@ public class Chunk {
         FloatBuffer vertexPositionData = BufferUtils.createFloatBuffer(CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE * 6 * 12);
         
         for(int x = 0; x < CHUNK_SIZE; x++){
+            
             for(int z = 0; z < CHUNK_SIZE; z++){
+                
                 int maxHeight = (int)((simplexNoise.getNoise(x, z)) * 20 + 10);
+                
                 for(int y = 0; y < maxHeight; y++){
-                    blocks[x][y][z] = texture.chooseBlock(r.nextFloat());
+                    blocks[x][y][z] = texture.getBlockTexture();
 
                     vertexTextureData.put(texture.createTexCube(blocks[x][y][z]));
                     vertexPositionData.put(texture.createCube((float)(startX + x * CUBE_LENGTH), (float)(y * CUBE_LENGTH + startY), (float)(startZ + z * CUBE_LENGTH)));
@@ -67,7 +68,6 @@ public class Chunk {
     public Chunk(int startX, int startY, int startZ){
         texture = new TextureController();
         blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
-        r = new Random((int)System.currentTimeMillis());
         simplexNoise = new SimplexNoise(MAX_HEIGHT, 0.15f, (int)System.currentTimeMillis());
         
         VBOVertexHandle = glGenBuffers();

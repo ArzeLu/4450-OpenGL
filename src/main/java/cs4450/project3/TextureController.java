@@ -7,12 +7,16 @@ package cs4450.project3;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
+import java.util.Random;
 
 public class TextureController {
+    private static Texture texture;
+    private Random r;
     final private static float OFFSET = (1024f / 16) / 1024f;
     final private static int CUBE_LENGTH = 2;
-    private static Texture texture;
     
+    ///================================
+    ///List of texture coordinates here
     final float grassTexCoords[] = new float[]{
         //Top
         OFFSET * 12, OFFSET * 12,
@@ -210,13 +214,19 @@ public class TextureController {
         OFFSET * 2, OFFSET * 2,
         OFFSET * 1, OFFSET * 2,
     };
+    ///================================
     
-    public TextureController(){};
+    ///Constructor
+    public TextureController(){
+        r = new Random((int)System.currentTimeMillis());
+    };
     
+    ///Binds Texture object
     public void bindTexture(){
         texture.bind();
     }
     
+    ///Loads texture "terrain.png" from the assets folder
     public void loadTexture(){
         texture = null;
         try{
@@ -226,7 +236,10 @@ public class TextureController {
         }
     }
     
-    public Block chooseBlock(float chance){
+    ///Randomly pick a block texture
+    public Block getBlockTexture(){
+        float chance = r.nextFloat();
+        
         if(chance > 0.6f){
             return new Block(BlockType.Grass);
         }else if(chance > 0.5f){
