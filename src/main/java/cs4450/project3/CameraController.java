@@ -5,6 +5,8 @@
 package cs4450.project3;
 
 //class dependencies
+import java.nio.FloatBuffer;
+import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.*;
 
 public class CameraController {
@@ -19,7 +21,7 @@ public class CameraController {
     private float pitch = 0.0f;
     
     private CameraPosition me;
-    
+    FloatBuffer lightPosition = BufferUtils.createFloatBuffer(4);
     //===========PUBLIC CLASSES============
     //Constructor
     public CameraController(float x, float y, float z){
@@ -46,6 +48,10 @@ public class CameraController {
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw));
         position.x -= xOffset;
         position.z += zOffset;
+        
+        lightPosition.put(IPosition.x-=xOffset).put(IPosition.y).put(IPosition.z+=zOffset).put(1.0f).flip();
+        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
+
     }
     
     //moves the camera backward relative to its current rotation (yaw)
@@ -54,6 +60,10 @@ public class CameraController {
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw));
         position.x += xOffset;
         position.z -= zOffset;
+        
+        lightPosition.put(IPosition.x-=xOffset).put(IPosition.y).put(IPosition.z+=zOffset).put(1.0f).flip();
+        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
+
     }
     
     //strafes the camera left relative to its current rotation (yaw)
@@ -62,6 +72,10 @@ public class CameraController {
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw - 90));
         position.x -= xOffset;
         position.z += zOffset;
+        
+        lightPosition.put(IPosition.x-=xOffset).put(IPosition.y).put(IPosition.z+=zOffset).put(1.0f).flip();
+        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
+
     }
     
     //strafes the camera right relative to its current rotation (yaw)
@@ -70,6 +84,10 @@ public class CameraController {
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw + 90));
         position.x -= xOffset;
         position.z += zOffset;
+        
+        lightPosition.put(IPosition.x-=xOffset).put(IPosition.y).put(IPosition.z+=zOffset).put(1.0f).flip();
+        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
+
     }
     
     //moves the camera up relative to its current rotation (yaw)
@@ -91,6 +109,11 @@ public class CameraController {
         glRotatef(yaw, 0.0f, 1.0f, 0.0f);
         //translate to the position vector's location
         glTranslatef(position.x, position.y, position.z);
+        
+      
+        lightPosition.put(IPosition.x).put(IPosition.y).put(IPosition.z).put(1.0f).flip();
+        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
+
     }
     //=====================================
 }
