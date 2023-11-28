@@ -1,7 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+/** ***************************************************************
+ * File: TextureController.java
+ * Authors: Arze, Harshitha, Rucha
+ * Class: CS 4450 - Computer Graphics
+ *
+ * Assignment: Group Project - Checkpoint 2
+ * Date last modified: 11/07/2023
+ *
+ * Purpose: Defines texture for the cubes
+ **************************************************************** */
 package cs4450.project3;
 
 import org.newdawn.slick.opengl.Texture;
@@ -10,11 +16,12 @@ import org.newdawn.slick.util.ResourceLoader;
 import java.util.Random;
 
 public class TextureController {
+
     private static Texture texture;
     private Random r;
     final private static float OFFSET = (1024f / 16) / 1024f;
     final private static int CUBE_LENGTH = 2;
-    
+
     ///================================
     ///List of texture coordinates here
     final float grassTexCoords[] = new float[]{
@@ -27,7 +34,7 @@ public class TextureController {
         OFFSET * 2, OFFSET * 0,
         OFFSET * 3, OFFSET * 0,
         OFFSET * 3, OFFSET * 1,
-        OFFSET * 2, OFFSET * 1,        
+        OFFSET * 2, OFFSET * 1,
         //Front
         OFFSET * 3, OFFSET * 0,
         OFFSET * 4, OFFSET * 0,
@@ -47,9 +54,8 @@ public class TextureController {
         OFFSET * 3, OFFSET * 0,
         OFFSET * 4, OFFSET * 0,
         OFFSET * 4, OFFSET * 1,
-        OFFSET * 3, OFFSET * 1,
-    };
-    
+        OFFSET * 3, OFFSET * 1,};
+
     final float sandTexCoords[] = new float[]{
         //Top
         OFFSET * 2, OFFSET * 1,
@@ -80,9 +86,8 @@ public class TextureController {
         OFFSET * 2, OFFSET * 1,
         OFFSET * 3, OFFSET * 1,
         OFFSET * 3, OFFSET * 2,
-        OFFSET * 2, OFFSET * 2,
-    };
-    
+        OFFSET * 2, OFFSET * 2,};
+
     final float waterTexCoords[] = new float[]{
         //Top
         OFFSET * 13, OFFSET * 12,
@@ -113,9 +118,8 @@ public class TextureController {
         OFFSET * 13, OFFSET * 12,
         OFFSET * 14, OFFSET * 12,
         OFFSET * 14, OFFSET * 13,
-        OFFSET * 13, OFFSET * 13,
-    };
-    
+        OFFSET * 13, OFFSET * 13,};
+
     final float dirtTexCoords[] = new float[]{
         //Top
         OFFSET * 2, OFFSET * 0,
@@ -146,9 +150,8 @@ public class TextureController {
         OFFSET * 2, OFFSET * 0,
         OFFSET * 3, OFFSET * 0,
         OFFSET * 3, OFFSET * 1,
-        OFFSET * 2, OFFSET * 1,
-    };
-    
+        OFFSET * 2, OFFSET * 1,};
+
     final float stoneTexCoords[] = new float[]{
         //Top
         OFFSET * 1, OFFSET * 0,
@@ -179,9 +182,8 @@ public class TextureController {
         OFFSET * 1, OFFSET * 0,
         OFFSET * 2, OFFSET * 0,
         OFFSET * 2, OFFSET * 1,
-        OFFSET * 1, OFFSET * 1,
-    };
-    
+        OFFSET * 1, OFFSET * 1,};
+
     final float bedrockTexCoords[] = new float[]{
         //Top
         OFFSET * 1, OFFSET * 1,
@@ -212,49 +214,52 @@ public class TextureController {
         OFFSET * 1, OFFSET * 1,
         OFFSET * 2, OFFSET * 1,
         OFFSET * 2, OFFSET * 2,
-        OFFSET * 1, OFFSET * 2,
-    };
+        OFFSET * 1, OFFSET * 2,};
     ///================================
-    
+
     ///Constructor
-    public TextureController(){
-        r = new Random((int)System.currentTimeMillis());
-    };
-    
+    public TextureController() {
+        r = new Random((int) System.currentTimeMillis());
+    }
+
     ///Binds Texture object
-    public void bindTexture(){
+    public void bindTexture() {
         texture.bind();
     }
-    
+
     ///Loads texture "terrain.png" from the assets folder
-    public void loadTexture(){
+    public void loadTexture() {
         texture = null;
-        try{
+        try {
             texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("terrain.png"));
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Exception in Chunk constructor");
         }
     }
-    
+
     ///Randomly pick a block texture
-    public Block getBlockTexture(){
+    public Block getBlockTexture(int x, int y, int z, int maxHeight) {
         float chance = r.nextFloat();
-        
-        if(chance > 0.6f){
-            return new Block(BlockType.Grass);
-        }else if(chance > 0.5f){
+        if (y == maxHeight) {
+            if (y <= 8) {
+                return new Block(BlockType.Water);
+            } else if (y == 9) {
+                return new Block(BlockType.Sand);
+            } else {
+                return new Block(BlockType.Grass);
+            }
+        } else if (y < maxHeight && y > maxHeight - 3) {
             return new Block(BlockType.Dirt);
-        }else if(chance > 0.4f){
-            return new Block(BlockType.Sand);
-        }else if(chance > 0.2f){
+        } else if (y <= maxHeight - 3 && y > maxHeight - 6) {
             return new Block(BlockType.Stone);
-        }else if(chance > 0.1f){
+        } else if (y == 0) {
             return new Block(BlockType.Bedrock);
         }
-        return new Block(BlockType.Water);
+        return new Block(BlockType.Bedrock);
     }
-    
-    public float[] createCube(float x, float y, float z){
+
+    // creates a cube
+    public float[] createCube(float x, float y, float z) {
         int offset = CUBE_LENGTH / 2;
         return new float[]{
             // TOP QUAD
@@ -289,9 +294,10 @@ public class TextureController {
             x + offset, y - offset, z
         };
     }
-    
-    public float[] createTexCube(Block block){        
-        switch(block.getType()){
+
+    // creates texture cube
+    public float[] createTexCube(Block block) {
+        switch (block.getType()) {
             case Grass:
                 return grassTexCoords;
             case Sand:
@@ -305,7 +311,7 @@ public class TextureController {
             case Bedrock:
                 return bedrockTexCoords;
         }
-        
+
         return grassTexCoords;
     }
 }

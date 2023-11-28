@@ -1,8 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-// Made by Arze, Harshitha, Rucha
+/** ***************************************************************
+ * File: Chunk.java
+ * Authors: Arze, Harshitha, Rucha
+ * Class: CS 4450 - Computer Graphics
+ *
+ * Assignment: Group Project - Checkpoint 3
+ * Date last modified: 11/23/2023
+ *
+ * Purpose: This program creates chunk of cubes
+ *
+ **************************************************************** */
 package cs4450.project3;
 
 //class imports
@@ -22,6 +28,8 @@ public class Chunk {
     private int VBOTextureHandle;
     private int startX, startY, startZ;
     
+    // method: render
+    // purpose: Starts rendering loop
     public void render(){
         glPushMatrix();
         glBindBuffer(GL_ARRAY_BUFFER, VBOTextureHandle);
@@ -33,6 +41,8 @@ public class Chunk {
         glPopMatrix();
     }
     
+    // method: rebuildMesh
+    // purpose: creates chunk of cubes
     public void rebuildMesh(float startX, float startY, float startZ){
         VBOVertexHandle = glGenBuffers();
         VBOTextureHandle = glGenBuffers();
@@ -45,14 +55,15 @@ public class Chunk {
                 
                 int maxHeight = (int)((simplexNoise.getNoise(x, z)) * 20 + 10);
                 
-                for(int y = 0; y < maxHeight; y++){
-                    blocks[x][y][z] = texture.getBlockTexture();
+                for(int y = 0; y <= maxHeight; y++){
+                    blocks[x][y][z] = texture.getBlockTexture(x,y,z,maxHeight);
 
                     vertexTextureData.put(texture.createTexCube(blocks[x][y][z]));
                     vertexPositionData.put(texture.createCube((float)(startX + x * CUBE_LENGTH), (float)(y * CUBE_LENGTH + startY), (float)(startZ + z * CUBE_LENGTH)));
                 }
             }
         }
+
         vertexTextureData.flip();
         vertexPositionData.flip();
         
@@ -65,6 +76,8 @@ public class Chunk {
         glBindBuffer(GL_ARRAY_BUFFER, 0);        
     }
     
+    // Chunk class
+    // Calls rebuildMesh() method
     public Chunk(int startX, int startY, int startZ){
         texture = new TextureController();
         blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];

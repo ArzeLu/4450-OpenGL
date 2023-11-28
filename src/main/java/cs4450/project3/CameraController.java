@@ -1,7 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+/** ***************************************************************
+ * File: CameraController.java
+ * Authors: Arze, Harshitha, Rucha
+ * Class: CS 4450 - Computer Graphics
+ *
+ * Assignment: Group Project - Checkpoint 2
+ * Date last modified: 11/07/2023
+ *
+ * Purpose: This program defines camera controls
+ *
+ **************************************************************** */
 package cs4450.project3;
 
 //class dependencies

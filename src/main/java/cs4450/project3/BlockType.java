@@ -1,13 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+/** ***************************************************************
+ * File: BlockType.java
+ * Authors: Arze, Harshitha, Rucha
+ * Class: CS 4450 - Computer Graphics
+ *
+ * Assignment: Group Project - Checkpoint 2
+ * Date last modified: 11/07/2023
+ *
+ * Purpose: This is a user defined class with Block Types
+ *
+ **************************************************************** */
 package cs4450.project3;
 
-/**
- *
- * @author arze7
- */
 public enum BlockType{
     Grass(0),
     Sand(1),

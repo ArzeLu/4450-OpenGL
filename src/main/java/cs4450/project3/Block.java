@@ -1,7 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+/** ***************************************************************
+ * File: Block.java
+ * Authors: Arze, Harshitha, Rucha
+ * Class: CS 4450 - Computer Graphics
+ *
+ * Assignment: Group Project - Checkpoint 2
+ * Date last modified: 11/07/2023
+ *
+ * Purpose: This is a user defined Block class
+ *
+ **************************************************************** */
 package cs4450.project3;
 
 public class Block {
