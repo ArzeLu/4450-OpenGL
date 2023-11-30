@@ -34,9 +34,9 @@ public class CameraController {
     public CameraController(float x, float y, float z){
         position = new CameraPosition(x, y, z);
         IPosition = new CameraPosition(x, y, z);
-        IPosition.x = 0f;
+        IPosition.x = 100f;
         IPosition.y = 15f;
-        IPosition.z = 0f;
+        IPosition.z = 100f;
     }
     
     //increment the camera's current left right rotation
@@ -56,8 +56,8 @@ public class CameraController {
         position.x -= xOffset;
         position.z += zOffset;
         
-        lightPosition.put(IPosition.x-=xOffset).put(IPosition.y).put(IPosition.z+=zOffset).put(1.0f).flip();
-        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
+//        lightPosition.put(IPosition.x-=xOffset).put(IPosition.y).put(IPosition.z+=zOffset).put(1.0f).flip();
+//        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
 
     }
     
@@ -68,8 +68,8 @@ public class CameraController {
         position.x += xOffset;
         position.z -= zOffset;
         
-        lightPosition.put(IPosition.x-=xOffset).put(IPosition.y).put(IPosition.z+=zOffset).put(1.0f).flip();
-        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
+//        lightPosition.put(IPosition.x-=xOffset).put(IPosition.y).put(IPosition.z+=zOffset).put(1.0f).flip();
+//        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
 
     }
     
@@ -80,8 +80,8 @@ public class CameraController {
         position.x -= xOffset;
         position.z += zOffset;
         
-        lightPosition.put(IPosition.x-=xOffset).put(IPosition.y).put(IPosition.z+=zOffset).put(1.0f).flip();
-        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
+//        lightPosition.put(IPosition.x-=xOffset).put(IPosition.y).put(IPosition.z+=zOffset).put(1.0f).flip();
+//        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
 
     }
     
@@ -92,8 +92,8 @@ public class CameraController {
         position.x -= xOffset;
         position.z += zOffset;
         
-        lightPosition.put(IPosition.x-=xOffset).put(IPosition.y).put(IPosition.z+=zOffset).put(1.0f).flip();
-        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
+//        lightPosition.put(IPosition.x-=xOffset).put(IPosition.y).put(IPosition.z+=zOffset).put(1.0f).flip();
+//        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
 
     }
     
@@ -118,7 +118,7 @@ public class CameraController {
         glTranslatef(position.x, position.y, position.z);
         
       
-        lightPosition.put(IPosition.x).put(IPosition.y).put(IPosition.z).put(1.0f).flip();
+        lightPosition.put(IPosition.x).put(IPosition.y).put(IPosition.z).put(1.0f).rewind();
         glLight(GL_LIGHT0, GL_POSITION, lightPosition);
 
     }
