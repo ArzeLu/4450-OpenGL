@@ -92,6 +92,9 @@ public class Project3 {
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                 camera.down(movementSpeed);
             }
+            if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
+                camera.topView((chunk.CHUNK_SIZE));
+            }
 
             //set the modelview matrix back to the identity
             glLoadIdentity();

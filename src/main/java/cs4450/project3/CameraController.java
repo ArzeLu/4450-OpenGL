@@ -107,6 +107,13 @@ public class CameraController {
         position.y += distance;
     }
     
+    public void topView(float chunkSize){
+          position.x = -chunkSize;
+          position.y = -chunkSize;
+          position.z = -chunkSize;
+          pitch = 90f;
+    }
+    
     //translates and rotate the matrix so that it looks through the camera
     //this does basically what gluLookAt() does
     public void lookThrough(){
