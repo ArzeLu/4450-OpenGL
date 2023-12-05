@@ -10,6 +10,8 @@
  **************************************************************** */
 package cs4450.project3;
 
+import static cs4450.project3.BlockType.Snow;
+import static cs4450.project3.BlockType.SnowSand;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
@@ -55,6 +57,79 @@ public class TextureController {
         OFFSET * 4, OFFSET * 0,
         OFFSET * 4, OFFSET * 1,
         OFFSET * 3, OFFSET * 1,};
+    
+    
+     final float snowTexCoords[] = new float[]{
+        //Top
+//        OFFSET * 9, OFFSET * 4,
+//        OFFSET * 10, OFFSET * 4,
+//        OFFSET * 9, OFFSET * 5,
+//        OFFSET * 10, OFFSET * 5,
+        OFFSET * 2, OFFSET * 5,
+        OFFSET * 3, OFFSET * 5,
+        OFFSET * 3, OFFSET * 4,
+        OFFSET * 2, OFFSET * 4,
+        //Bottom (x, y)
+        OFFSET * 2, OFFSET * 5,
+        OFFSET * 3, OFFSET * 5,
+        OFFSET * 3, OFFSET * 4,
+        OFFSET * 2, OFFSET * 4,
+        //Front
+        OFFSET * 4, OFFSET * 4,
+        OFFSET * 5, OFFSET * 4,
+        OFFSET * 5, OFFSET * 5,
+        OFFSET * 4, OFFSET * 5,
+        //Back (this one vertex mapping order is different than other faces)
+        OFFSET * 4, OFFSET * 5,
+        OFFSET * 5, OFFSET * 5,
+        OFFSET * 5, OFFSET * 4,
+        OFFSET * 4, OFFSET * 4,
+//        OFFSET * 4, OFFSET * 1,
+//        OFFSET * 3, OFFSET * 1,
+//        OFFSET * 3, OFFSET * 0,
+//        OFFSET * 4, OFFSET * 0,
+        //Left
+        OFFSET * 4, OFFSET * 4,
+        OFFSET * 5, OFFSET * 4,
+        OFFSET * 5, OFFSET * 5,
+        OFFSET * 4, OFFSET * 5,
+        //Right
+       OFFSET * 4, OFFSET * 4,
+        OFFSET * 5, OFFSET * 4,
+        OFFSET * 5, OFFSET * 5,
+        OFFSET * 4, OFFSET * 5,}; 
+     
+      final float snowWaterTexCoords[] = new float[]{
+        //Top
+        OFFSET * 8, OFFSET * 1,
+        OFFSET * 9, OFFSET * 1,
+        OFFSET * 9, OFFSET * 2,
+        OFFSET * 8, OFFSET * 2,
+        //Bottom (x, y)
+        OFFSET * 8, OFFSET * 1,
+        OFFSET * 9, OFFSET * 1,
+        OFFSET * 9, OFFSET * 2,
+        OFFSET * 8, OFFSET * 2,
+        //Front
+        OFFSET * 8, OFFSET * 1,
+        OFFSET * 9, OFFSET * 1,
+        OFFSET * 9, OFFSET * 2,
+        OFFSET * 8, OFFSET * 2,
+        //Back (this one vertex mapping order is different than other faces)
+        OFFSET * 8, OFFSET * 1,
+        OFFSET * 9, OFFSET * 1,
+        OFFSET * 9, OFFSET * 2,
+        OFFSET * 8, OFFSET * 2,
+        //Left
+        OFFSET * 8, OFFSET * 1,
+        OFFSET * 9, OFFSET * 1,
+        OFFSET * 9, OFFSET * 2,
+        OFFSET * 8, OFFSET * 2,
+        //Right
+        OFFSET * 8, OFFSET * 1,
+        OFFSET * 9, OFFSET * 1,
+        OFFSET * 9, OFFSET * 2,
+        OFFSET * 8, OFFSET * 2,}; 
 
     final float sandTexCoords[] = new float[]{
         //Top
@@ -87,6 +162,38 @@ public class TextureController {
         OFFSET * 3, OFFSET * 1,
         OFFSET * 3, OFFSET * 2,
         OFFSET * 2, OFFSET * 2,};
+    
+     final float snowSandTexCoords[] = new float[]{
+        //Top
+        OFFSET * 5, OFFSET * 7,
+        OFFSET * 6, OFFSET * 7,
+        OFFSET * 6, OFFSET * 8,
+        OFFSET * 5, OFFSET * 8,
+        //Bottom
+       OFFSET * 5, OFFSET * 7,
+        OFFSET * 6, OFFSET * 7,
+        OFFSET * 6, OFFSET * 8,
+        OFFSET * 5, OFFSET * 8,
+        //Front
+        OFFSET * 5, OFFSET * 7,
+        OFFSET * 6, OFFSET * 7,
+        OFFSET * 6, OFFSET * 8,
+        OFFSET * 5, OFFSET * 8,
+        //Back
+      OFFSET * 5, OFFSET * 7,
+        OFFSET * 6, OFFSET * 7,
+        OFFSET * 6, OFFSET * 8,
+        OFFSET * 5, OFFSET * 8,
+        //Left
+        OFFSET * 5, OFFSET * 7,
+        OFFSET * 6, OFFSET * 7,
+        OFFSET * 6, OFFSET * 8,
+        OFFSET * 5, OFFSET * 8,
+        //Right
+        OFFSET * 5, OFFSET * 7,
+        OFFSET * 6, OFFSET * 7,
+        OFFSET * 6, OFFSET * 8,
+        OFFSET * 5, OFFSET * 8,};
 
     final float waterTexCoords[] = new float[]{
         //Top
@@ -257,6 +364,26 @@ public class TextureController {
         }
         return new Block(BlockType.Bedrock);
     }
+    
+     public Block getWinterTexture(int x, int y, int z, int maxHeight) {
+        float chance = r.nextFloat();
+        if (y == maxHeight) {
+            if (y <= 8) {
+                return new Block(BlockType.Water);
+            } else if (y == 9) {
+                return new Block(BlockType.SnowSand);
+            } else {
+                return new Block(BlockType.Snow);
+            }
+        } else if (y < maxHeight && y > maxHeight - 3) {
+            return new Block(BlockType.Dirt);
+        } else if (y <= maxHeight - 3 && y > maxHeight - 6) {
+            return new Block(BlockType.Stone);
+        } else if (y == 0) {
+            return new Block(BlockType.Bedrock);
+        }
+        return new Block(BlockType.Bedrock);
+    }
 
     // creates a cube
     public float[] createCube(float x, float y, float z) {
@@ -298,7 +425,7 @@ public class TextureController {
     // creates texture cube
     public float[] createTexCube(Block block) {
         switch (block.getType()) {
-            case Grass:
+             case Grass:
                 return grassTexCoords;
             case Sand:
                 return sandTexCoords;
@@ -310,6 +437,11 @@ public class TextureController {
                 return stoneTexCoords;
             case Bedrock:
                 return bedrockTexCoords;
+                case Snow:
+                return snowTexCoords;
+            case SnowSand:
+                return snowSandTexCoords;
+            
         }
 
         return grassTexCoords;
