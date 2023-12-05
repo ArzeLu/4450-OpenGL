@@ -24,7 +24,7 @@ import org.lwjgl.BufferUtils;
 
 public class Project3 {
 
-    final private CameraController camera = new CameraController(0f, 0f, 0f);
+    final private CameraController camera = new CameraController(-100f, -50f, -100f); //Set the camera above chunk terrain
     final private TextureController texture = new TextureController();
     private Chunk chunk;
     private DisplayMode displayMode;
@@ -48,12 +48,18 @@ public class Project3 {
         long time = 0;
         float mouseSensitivity = 0.09f;
         float movementSpeed = 0.35f;
+        float sprintMultiplier = 1.5f;
+        boolean isAirborne;
+        boolean started = false;
+        boolean flightMode = false;
+        boolean e_toggled = false;
+        
         //hide the mouse
         Mouse.setGrabbed(true);
 
         chunk = new Chunk(0, 0, 0);
         texture.loadTexture();
-
+        
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             time = Sys.getTime();
             lastTime = time;
@@ -69,28 +75,48 @@ public class Project3 {
 
             //control camera pitch from y movement from the mouse
             camera.pitch(dy * mouseSensitivity);
-
+            
+            //Jumping and airborne logics.
+            //If the camera is airborne, then grab it back down to surface.
+            //Jumping is just the opposite of airborne in a sense.
+            //If one of them is active then the other one is deactivated.
+            isAirborne = camera.checkAirborne(flightMode, movementSpeed, chunk.getHeightMap());
+            camera.checkJumping(movementSpeed, chunk.getHeightMap());
+            
+            //togglers. Prevent variable change per loop tick
+            if (!e_toggled && Keyboard.isKeyDown(Keyboard.KEY_E)){
+                flightMode = !flightMode;
+            }
+            e_toggled = Keyboard.isKeyDown(Keyboard.KEY_E);
+            
             //when passing in the distance to move,
             //we multiply the movementSpeed with dt (a time scale),
             //so if it's a slow frame you move more than a fast frame,
             //so on a slow computer you move just as fast as on a fast computer.
             if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-                camera.forward(movementSpeed);
+                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+                    camera.forward(movementSpeed * sprintMultiplier, chunk.getHeightMap());
+                camera.forward(movementSpeed, chunk.getHeightMap());
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_S) || Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-                camera.backward(movementSpeed);
+                camera.backward(movementSpeed, chunk.getHeightMap());
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-                camera.left(movementSpeed);
+                camera.left(movementSpeed, chunk.getHeightMap());
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_D) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-                camera.right(movementSpeed);
+                camera.right(movementSpeed, chunk.getHeightMap());
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-                camera.up(movementSpeed);
+                if (flightMode){
+                    camera.up(movementSpeed);
+                }else if(!isAirborne){
+                    camera.jump(movementSpeed);
+                }
             }
-            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                camera.down(movementSpeed);
+            if (!isAirborne && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                if(flightMode)
+                    camera.down(movementSpeed, chunk.getHeightMap()); 
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
                 camera.topView((chunk.CHUNK_SIZE));
@@ -117,7 +143,7 @@ public class Project3 {
             texture.bindTexture();
 
             render();
-
+            
             Display.update();
             Display.sync(60);
         }
