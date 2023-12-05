@@ -17,7 +17,9 @@ public enum BlockType{
     Water(2),
     Dirt(3),
     Stone(4),
-    Bedrock(5);
+    Bedrock(5),
+    Snow(6),
+    SnowSand(7);
 
     private int blockID;
 

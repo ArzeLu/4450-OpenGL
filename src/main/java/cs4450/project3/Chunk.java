@@ -82,6 +82,41 @@ public class Chunk {
         glBindBuffer(GL_ARRAY_BUFFER, 0);        
     }
     
+    // method: rebuildWinterMesh
+    //purpose: creates chunk of cubes for Season change : Winter 
+    public void rebuildWinterMesh(float startX, float startY, float startZ){
+        VBOVertexHandle = glGenBuffers();
+        VBOTextureHandle = glGenBuffers();
+        FloatBuffer vertexTextureData = BufferUtils.createFloatBuffer(CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE * 6 * 12); //6 sets of coords 12 each. Refer to TextureMaker.java
+        FloatBuffer vertexPositionData = BufferUtils.createFloatBuffer(CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE * 6 * 12);
+        
+        for(int x = 0; x < CHUNK_SIZE; x++){
+            
+            for(int z = 0; z < CHUNK_SIZE; z++){
+                
+                int maxHeight = (int)((simplexNoise.getNoise(x, z)) * 20 + 10);
+                
+                for(int y = 0; y <= maxHeight; y++){
+                    blocks[x][y][z] = texture.getWinterTexture(x,y,z,maxHeight);
+
+                    vertexTextureData.put(texture.createTexCube(blocks[x][y][z]));
+                    vertexPositionData.put(texture.createCube((float)(startX + x * CUBE_LENGTH), (float)(y * CUBE_LENGTH + startY), (float)(startZ + z * CUBE_LENGTH)));
+                }
+            }
+        }
+
+        vertexTextureData.flip();
+        vertexPositionData.flip();
+        
+        glBindBuffer(GL_ARRAY_BUFFER, VBOTextureHandle);
+        glBufferData(GL_ARRAY_BUFFER, vertexTextureData, GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        
+        glBindBuffer(GL_ARRAY_BUFFER, VBOVertexHandle);
+        glBufferData(GL_ARRAY_BUFFER, vertexPositionData, GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);        
+    }
+    
     // Chunk class
     // Calls rebuildMesh() method
     public Chunk(int startX, int startY, int startZ){

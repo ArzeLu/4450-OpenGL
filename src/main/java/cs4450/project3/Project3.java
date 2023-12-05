@@ -121,6 +121,16 @@ public class Project3 {
             if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
                 camera.topView((chunk.CHUNK_SIZE));
             }
+            if (Keyboard.isKeyDown(Keyboard.KEY_C)) {
+                 // method: rebuildWinterMesh
+                 //purpose: on press of key C changes to Winter Season 
+               chunk.rebuildWinterMesh(0, 0, 0);
+            }
+             if (Keyboard.isKeyDown(Keyboard.KEY_R)) {
+                 // method: rebuildWinterMesh
+                 //purpose: on press of key C changes to Summer Season 
+               chunk.rebuildMesh(0, 0, 0);
+            }
 
             //set the modelview matrix back to the identity
             glLoadIdentity();
