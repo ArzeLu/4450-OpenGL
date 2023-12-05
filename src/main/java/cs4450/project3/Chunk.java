@@ -76,6 +76,8 @@ public class Chunk {
         glBindBuffer(GL_ARRAY_BUFFER, 0);        
     }
     
+    // method: rebuildWinterMesh
+    //purpose: creates chunk of cubes for Season change : Winter 
     public void rebuildWinterMesh(float startX, float startY, float startZ){
         VBOVertexHandle = glGenBuffers();
         VBOTextureHandle = glGenBuffers();

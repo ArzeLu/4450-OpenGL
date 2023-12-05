@@ -365,6 +365,7 @@ public class TextureController {
         return new Block(BlockType.Bedrock);
     }
     
+    ///Randomly pick a block texture for Winter Season
      public Block getWinterTexture(int x, int y, int z, int maxHeight) {
         float chance = r.nextFloat();
         if (y == maxHeight) {
