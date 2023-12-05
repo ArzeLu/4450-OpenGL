@@ -10,7 +10,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:3.1.0:exec</goal>
             </goals>
             <properties>
-                <exec.vmArgs>"-Djava.library.path=C:\MSCS\1 CS 4450\lwjgl-2.9.2\lwjgl-2.9.2\native\windows"</exec.vmArgs>
+                <exec.vmArgs>"-Djava.library.path=C:\Users\arze7\personal\CPP_CS4450\lwjgl-2.9.2\lwjgl-2.9.2\native\windows"</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.appArgs></exec.appArgs>
                 <exec.mainClass>${packageClassName}</exec.mainClass>
@@ -27,7 +27,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:3.1.0:exec</goal>
             </goals>
             <properties>
-                <exec.vmArgs>"-Djava.library.path=C:\MSCS\1 CS 4450\lwjgl-2.9.2\lwjgl-2.9.2\native\windows" -agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
+                <exec.vmArgs>"-Djava.library.path=C:\Users\arze7\personal\CPP_CS4450\lwjgl-2.9.2\lwjgl-2.9.2\native\windows" -agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.appArgs></exec.appArgs>
                 <exec.mainClass>${packageClassName}</exec.mainClass>
@@ -45,7 +45,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:3.1.0:exec</goal>
             </goals>
             <properties>
-                <exec.vmArgs>"-Djava.library.path=C:\MSCS\1 CS 4450\lwjgl-2.9.2\lwjgl-2.9.2\native\windows"</exec.vmArgs>
+                <exec.vmArgs>"-Djava.library.path=C:\Users\arze7\personal\CPP_CS4450\lwjgl-2.9.2\lwjgl-2.9.2\native\windows"</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.mainClass>${packageClassName}</exec.mainClass>
                 <exec.executable>java</exec.executable>

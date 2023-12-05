@@ -21,12 +21,17 @@ public class Chunk {
     static final int CHUNK_SIZE = 100;
     static final int CUBE_LENGTH = 2;
     static final int MAX_HEIGHT = CHUNK_SIZE / 2;
+    private int heightMap[][] = new int[100][100];
     private Block[][][] blocks;
     private SimplexNoise simplexNoise;
     private TextureController texture;
     private int VBOVertexHandle;
     private int VBOTextureHandle;
     private int startX, startY, startZ;
+    
+    public int[][] getHeightMap(){
+        return heightMap;
+    }
     
     // method: render
     // purpose: Starts rendering loop
@@ -54,6 +59,7 @@ public class Chunk {
             for(int z = 0; z < CHUNK_SIZE; z++){
                 
                 int maxHeight = (int)((simplexNoise.getNoise(x, z)) * 20 + 10);
+                heightMap[x][z] = maxHeight;
                 
                 for(int y = 0; y <= maxHeight; y++){
                     blocks[x][y][z] = texture.getBlockTexture(x,y,z,maxHeight);

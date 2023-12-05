@@ -259,39 +259,46 @@ public class TextureController {
     }
 
     // creates a cube
+    // Edited this so that the first cube is created nicely extending from the starting point and not around it.
+    // The edit was for ease of physics calculations
     public float[] createCube(float x, float y, float z) {
         int offset = CUBE_LENGTH / 2;
         return new float[]{
             // TOP QUAD
-            x + offset, y + offset, z,
-            x - offset, y + offset, z,
-            x - offset, y + offset, z - CUBE_LENGTH,
-            x + offset, y + offset, z - CUBE_LENGTH,
+            x + CUBE_LENGTH, y + CUBE_LENGTH, z + CUBE_LENGTH,
+            x, y + CUBE_LENGTH, z + CUBE_LENGTH,
+            x, y + CUBE_LENGTH, z,
+            x + CUBE_LENGTH, y + CUBE_LENGTH, z,
+            
             // BOTTOM QUAD
-            x + offset, y - offset, z - CUBE_LENGTH,
-            x - offset, y - offset, z - CUBE_LENGTH,
-            x - offset, y - offset, z,
-            x + offset, y - offset, z,
+            x + CUBE_LENGTH, y, z,
+            x, y, z,
+            x, y, z + CUBE_LENGTH,
+            x + CUBE_LENGTH, y, z + CUBE_LENGTH,
+            
             // FRONT QUAD
-            x + offset, y + offset, z - CUBE_LENGTH,
-            x - offset, y + offset, z - CUBE_LENGTH,
-            x - offset, y - offset, z - CUBE_LENGTH,
-            x + offset, y - offset, z - CUBE_LENGTH,
+            x + CUBE_LENGTH, y + CUBE_LENGTH, z,
+            x, y + CUBE_LENGTH, z,
+            x, y, z,
+            x + CUBE_LENGTH, y, z,
+            
             // BACK QUAD
-            x + offset, y - offset, z,
-            x - offset, y - offset, z,
-            x - offset, y + offset, z,
-            x + offset, y + offset, z,
+            x + CUBE_LENGTH, y, z + CUBE_LENGTH,
+            x, y, z + CUBE_LENGTH,
+            x, y + CUBE_LENGTH, z + CUBE_LENGTH,
+            x + CUBE_LENGTH, y + CUBE_LENGTH, z + CUBE_LENGTH,
+            
             // LEFT QUAD
-            x - offset, y + offset, z - CUBE_LENGTH,
-            x - offset, y + offset, z,
-            x - offset, y - offset, z,
-            x - offset, y - offset, z - CUBE_LENGTH,
+            x, y + CUBE_LENGTH, z,
+            x, y + CUBE_LENGTH, z + CUBE_LENGTH,
+            x, y, z + CUBE_LENGTH,
+            x, y, z,
+            
             // RIGHT QUAD
-            x + offset, y + offset, z,
-            x + offset, y + offset, z - CUBE_LENGTH,
-            x + offset, y - offset, z - CUBE_LENGTH,
-            x + offset, y - offset, z
+            x + CUBE_LENGTH, y + CUBE_LENGTH, z + CUBE_LENGTH,
+            x + CUBE_LENGTH, y + CUBE_LENGTH, z,
+            x + CUBE_LENGTH, y, z,
+            x + CUBE_LENGTH, y, z + CUBE_LENGTH
         };
     }
 
