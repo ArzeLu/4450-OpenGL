@@ -3,8 +3,8 @@
  * Authors: Arze, Harshitha, Rucha
  * Class: CS 4450 - Computer Graphics
  *
- * Assignment: Group Project - Checkpoint 3
- * Date last modified: 11/23/2023
+ * Assignment: Group Project - final checkpoint
+ * Date last modified: 12/05/2023
  *
  * Purpose: This program creates chunk of cubes
  *
@@ -29,6 +29,8 @@ public class Chunk {
     private int VBOTextureHandle;
     private int startX, startY, startZ;
     
+    // method: getHeightMap
+    // purpose: returns map height
     public int[][] getHeightMap(){
         return heightMap;
     }

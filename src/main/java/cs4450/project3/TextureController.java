@@ -3,8 +3,8 @@
  * Authors: Arze, Harshitha, Rucha
  * Class: CS 4450 - Computer Graphics
  *
- * Assignment: Group Project - Checkpoint 2
- * Date last modified: 11/07/2023
+ * Assignment: Group Project - final checkpoint
+ * Date last modified: 12/05/2023
  *
  * Purpose: Defines texture for the cubes
  **************************************************************** */
@@ -344,7 +344,8 @@ public class TextureController {
         }
     }
 
-    ///Randomly pick a block texture
+    // method: getBlockTexture
+    // purpose: Picks block textures and place them by layers
     public Block getBlockTexture(int x, int y, int z, int maxHeight) {
         float chance = r.nextFloat();
         if (y == maxHeight) {
@@ -365,7 +366,8 @@ public class TextureController {
         return new Block(BlockType.Bedrock);
     }
     
-    ///Randomly pick a block texture for Winter Season
+    // method: getWinterTexture
+    // purpose: Randomly pick a block texture for Winter Season
      public Block getWinterTexture(int x, int y, int z, int maxHeight) {
         float chance = r.nextFloat();
         if (y == maxHeight) {
@@ -386,9 +388,11 @@ public class TextureController {
         return new Block(BlockType.Bedrock);
     }
 
-    // creates a cube
-    // Edited this so that the first cube is created nicely extending from the starting point and not around it.
-    // The edit was for ease of physics calculations
+    // method: createCube
+    // purpose: creates a cube
+    //          Edited this so that the first cube is created nicely 
+    //          extending from the starting point and not around it.
+    //          The edit was for ease of physics calculations
     public float[] createCube(float x, float y, float z) {
         int offset = CUBE_LENGTH / 2;
         return new float[]{
@@ -430,7 +434,8 @@ public class TextureController {
         };
     }
 
-    // creates texture cube
+    // method: createTexCube
+    // purpose: creates texture cube
     public float[] createTexCube(Block block) {
         switch (block.getType()) {
              case Grass:

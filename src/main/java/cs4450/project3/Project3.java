@@ -3,8 +3,8 @@
  * Authors: Arze, Harshitha, Rucha
  * Class: CS 4450 - Computer Graphics
  *
- * Assignment: Group Project - Checkpoint 3
- * Date last modified: 11/23/2023
+ * Assignment: Group Project - Final Checkpoint
+ * Date last modified: 12/05/2023
  *
  * Purpose: This program starts the rendering process and gameloop
  *
@@ -40,6 +40,9 @@ public class Project3 {
 
     // method: gameLoop
     // purpose: defines movements of the mouse
+    // calls: glLoadIdentity(), texture.loadTexture(), camera.yaw(),
+    //        camera.pitch(), camera.checkJumping, camera.checkAirborne(),
+    //        glLoadIdentity(), render() and few camera methods.
     public void gameLoop() {
         float dx = 0.0f;
         float dy = 0.0f;
@@ -118,17 +121,16 @@ public class Project3 {
                 if(flightMode)
                     camera.down(movementSpeed, chunk.getHeightMap()); 
             }
+            // moves camera view to the top
             if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
                 camera.topView((chunk.CHUNK_SIZE));
             }
-            if (Keyboard.isKeyDown(Keyboard.KEY_C)) {
-                 // method: rebuildWinterMesh
-                 //purpose: on press of key C changes to Winter Season 
+            // on press of key C changes to Winter Season 
+            if (Keyboard.isKeyDown(Keyboard.KEY_C)) {                 
                chunk.rebuildWinterMesh(0, 0, 0);
             }
+            // on press of key R changes to Summer Season 
              if (Keyboard.isKeyDown(Keyboard.KEY_R)) {
-                 // method: rebuildWinterMesh
-                 //purpose: on press of key C changes to Summer Season 
                chunk.rebuildMesh(0, 0, 0);
             }
 
@@ -150,6 +152,8 @@ public class Project3 {
         Display.destroy();
     }
 
+    // method: initLightArrays
+    // purpose: sets initial light positions
     private void initLightArrays() {
         lightPosition = BufferUtils.createFloatBuffer(4);
         lightPosition.put(0.0f).put(0.0f).put(0.0f).put(1.0f).flip();
@@ -158,7 +162,9 @@ public class Project3 {
         whiteLight.put(1.0f).put(1.0f).put(1.0f).put(0.0f).flip();
     }
 
-    //Initiate GL process
+    // methos: initGL
+    // purpose: Initiates GL process
+    // calls: initLightArrays()
     private void initGL() {
         glClearColor(0.47f, 0.65f, 1.0f, 0.0f);
 
