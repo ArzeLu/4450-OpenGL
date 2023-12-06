@@ -56,13 +56,13 @@ public class Project3 {
         boolean started = false;
         boolean flightMode = false;
         boolean e_toggled = false;
-        
+
         //hide the mouse
         Mouse.setGrabbed(true);
 
         chunk = new Chunk(0, 0, 0);
         texture.loadTexture();
-        
+
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             time = Sys.getTime();
             lastTime = time;
@@ -78,27 +78,47 @@ public class Project3 {
 
             //control camera pitch from y movement from the mouse
             camera.pitch(dy * mouseSensitivity);
-            
+
             //Jumping and airborne logics.
             //If the camera is airborne, then grab it back down to surface.
             //Jumping is just the opposite of airborne in a sense.
             //If one of them is active then the other one is deactivated.
             isAirborne = camera.checkAirborne(flightMode, movementSpeed, chunk.getHeightMap());
             camera.checkJumping(movementSpeed, chunk.getHeightMap());
-            
+
             //togglers. Prevent variable change per loop tick
-            if (!e_toggled && Keyboard.isKeyDown(Keyboard.KEY_E)){
+            if (!e_toggled && Keyboard.isKeyDown(Keyboard.KEY_E)) {
                 flightMode = !flightMode;
             }
             e_toggled = Keyboard.isKeyDown(Keyboard.KEY_E);
+
+/*****
+            The light position changes every 10 seconds creating a sunset feature.
+
+            Use the following keys to activate/move the camera positions.
+
+            C – to see winter season
+            R – for summer season
+            E – to switch between normal mode and gravity mode
+            T – to see the top view
+            W,S,A,D & UP,DOWN,LEFT,RIGHT keys to move front,back,left,right
+
+            In normal mode:
+            Left Shift – to move into/closer
+            Space bar – to move up/away
+
+            In gravity mode:
+            Space bar – to jump 
             
+*********/
             //when passing in the distance to move,
             //we multiply the movementSpeed with dt (a time scale),
             //so if it's a slow frame you move more than a fast frame,
             //so on a slow computer you move just as fast as on a fast computer.
             if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-                if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+                if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                     camera.forward(movementSpeed * sprintMultiplier, chunk.getHeightMap());
+                }
                 camera.forward(movementSpeed, chunk.getHeightMap());
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_S) || Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
@@ -111,27 +131,28 @@ public class Project3 {
                 camera.right(movementSpeed, chunk.getHeightMap());
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-                if (flightMode){
+                if (flightMode) {
                     camera.up(movementSpeed);
-                }else if(!isAirborne){
+                } else if (!isAirborne) {
                     camera.jump(movementSpeed);
                 }
             }
             if (!isAirborne && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-                if(flightMode)
-                    camera.down(movementSpeed, chunk.getHeightMap()); 
+                if (flightMode) {
+                    camera.down(movementSpeed, chunk.getHeightMap());
+                }
             }
             // moves camera view to the top
             if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
                 camera.topView((chunk.CHUNK_SIZE));
             }
             // on press of key C changes to Winter Season 
-            if (Keyboard.isKeyDown(Keyboard.KEY_C)) {                 
-               chunk.rebuildWinterMesh(0, 0, 0);
+            if (Keyboard.isKeyDown(Keyboard.KEY_C)) {
+                chunk.rebuildWinterMesh(0, 0, 0);
             }
             // on press of key R changes to Summer Season 
-             if (Keyboard.isKeyDown(Keyboard.KEY_R)) {
-               chunk.rebuildMesh(0, 0, 0);
+            if (Keyboard.isKeyDown(Keyboard.KEY_R)) {
+                chunk.rebuildMesh(0, 0, 0);
             }
 
             //set the modelview matrix back to the identity
@@ -145,7 +166,7 @@ public class Project3 {
             texture.bindTexture();
 
             render();
-            
+
             Display.update();
             Display.sync(60);
         }
